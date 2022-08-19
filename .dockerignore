@@ -1,0 +1,7 @@
+.git
+.vscode
+.gitignore
+README.md
+Dockerfile
+node_modules
+db/postgres/.data
