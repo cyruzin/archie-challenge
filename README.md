@@ -8,7 +8,9 @@ Rename the **.env_example** to **.env** and fill the variables.
 
 Make sure you have Docker installed in your machine.
 
-This app uses Postgres. Run the command below to enable the database:
+The app uses Postgres, the SQL script should be executed automatically.
+
+Run the command below to run the database:
 
 ```sh
  docker-compose up -d
@@ -34,4 +36,4 @@ Then:
 
 ## Documentation
 
-Go to the **docs** folder.
+Go to the **docs** folder. It has an Insomnia schema inside, just import it to test the endpoints.
