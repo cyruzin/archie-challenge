@@ -1,4 +1,4 @@
-import { IInvoice } from '../domain/invoice';
+import { EInvoiceStats, IInvoice } from '../domain/invoice';
 import { InvoiceService } from './invoice';
 import { InvoiceRepository } from '../repositories/invoice';
 
@@ -10,7 +10,7 @@ describe('invoice service - getAll success', () => {
         title: 'First Invoice',
         client_id: 1,
         user_id: 2,
-        status: 'APPROVED',
+        status: EInvoiceStats.APPROVED,
         total_amount: 5000,
         created_at: new Date(),
         updated_at: new Date(),
@@ -20,7 +20,7 @@ describe('invoice service - getAll success', () => {
         title: 'Another Invoice',
         client_id: 2,
         user_id: 3,
-        status: 'PENDING',
+        status: EInvoiceStats.PENDING,
         total_amount: 300,
         created_at: new Date(),
         updated_at: new Date(),
@@ -31,8 +31,8 @@ describe('invoice service - getAll success', () => {
 
     const res = await InvoiceService.getAll();
 
-    expect(res[0].status).toBe('APPROVED');
-    expect(res[1].status).toBe('PENDING');
+    expect(res[0].status).toBe(EInvoiceStats.APPROVED);
+    expect(res[1].status).toBe(EInvoiceStats.PENDING);
 
     expect(InvoiceRepository.getAll).toBeCalledTimes(1);
   });
@@ -59,7 +59,7 @@ describe('invoice service - getByID success', () => {
       title: 'First Invoice',
       client_id: 1,
       user_id: 2,
-      status: 'APPROVED',
+      status: EInvoiceStats.APPROVED,
       total_amount: 5000,
       created_at: new Date(),
       updated_at: new Date(),
@@ -69,7 +69,7 @@ describe('invoice service - getByID success', () => {
 
     const res = await InvoiceService.getByID(1);
 
-    expect(res.status).toBe('APPROVED');
+    expect(res.status).toBe(EInvoiceStats.APPROVED);
 
     expect(InvoiceRepository.getByID).toBeCalledTimes(1);
   });
@@ -95,7 +95,6 @@ describe('invoice service - create success', () => {
       title: 'First Invoice',
       client_id: 1,
       user_id: 2,
-      status: 'APPROVED',
       total_amount: 5000,
     };
 
@@ -113,7 +112,6 @@ describe('invoice service - create failure', () => {
       title: 'First Invoice',
       client_id: 1,
       user_id: 2,
-      status: 'APPROVED',
       total_amount: 5000,
     };
 
@@ -136,7 +134,7 @@ describe('invoice service - update success', () => {
       title: 'First Invoice',
       client_id: 1,
       user_id: 2,
-      status: 'APPROVED',
+      status: EInvoiceStats.APPROVED,
       total_amount: 5000,
     };
 
@@ -156,7 +154,7 @@ describe('invoice service - update failure', () => {
       title: 'First Invoice',
       client_id: 1,
       user_id: 2,
-      status: 'APPROVED',
+      status: EInvoiceStats.APPROVED,
       total_amount: 5000,
     };
 
@@ -179,7 +177,7 @@ describe('invoice service - remove success', () => {
       title: 'First Invoice',
       client_id: 1,
       user_id: 2,
-      status: 'APPROVED',
+      status: EInvoiceStats.APPROVED,
       total_amount: 5000,
       created_at: new Date(),
       updated_at: new Date(),

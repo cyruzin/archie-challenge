@@ -1,9 +1,15 @@
+export enum EInvoiceStats {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  CANCELED = 'CANCELED',
+}
+
 export interface IInvoice {
   id?: number;
   user_id: number;
   client_id: number;
   title: string;
-  status: 'PENDING' | 'APPROVED' | 'CANCELED';
+  status?: EInvoiceStats;
   total_amount: number;
   created_at?: Date;
   updated_at?: Date;
