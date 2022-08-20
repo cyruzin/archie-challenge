@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   postgres:
-    image: postgres:14.4-alpine
+    image: postgres:14.5-alpine
     container_name: archie-database
     hostname: archie-database
     restart: unless-stopped
