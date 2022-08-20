@@ -4,7 +4,6 @@ dotenv.config({ path: __dirname + '../../.env' });
 
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import timeout from 'connect-timeout';
 
 import routes from './routes';
@@ -15,7 +14,7 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(timeout('5s'));
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(routes);
 
 (async () => {
