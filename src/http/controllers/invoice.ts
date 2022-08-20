@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { EInvoiceStats, IInvoice } from '../../domain/invoice';
+import { IInvoice } from '../../domain/invoice';
 import { CreateInvoiceSchema, UpdateInvoiceSchema } from '../../validation/invoice';
 import { InvoiceService } from '../../services/invoice';
 import ValidationError from '../../errors/validation';
@@ -32,7 +32,6 @@ export const create = async (req: Request, res: Response) => {
       user_id: +req.body.user_id,
       client_id: +req.body.client_id,
       total_amount: +req.body.total_amount,
-      status: EInvoiceStats.PENDING,
     } as IInvoice;
 
     const validation = CreateInvoiceSchema.validate(client);

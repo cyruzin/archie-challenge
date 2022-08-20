@@ -58,11 +58,10 @@ async function create(invoice: IInvoice): Promise<void> {
         user_id,
         client_id,
         title,
-        status,
         total_amount 
        ) 
-       VALUES($1, $2, $3, $4, $5)`,
-      [invoice.user_id, invoice.client_id, invoice.title, invoice.status, invoice.total_amount],
+       VALUES($1, $2, $3, $4)`,
+      [invoice.user_id, invoice.client_id, invoice.title, invoice.total_amount],
     );
   } catch (err) {
     throw err;
