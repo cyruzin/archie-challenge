@@ -51,7 +51,6 @@ async function getAll(): Promise<IInvoice[]> {
 
     return parseInvoices;
   } catch (err) {
-    console.log(err);
     throw err;
   }
 }
