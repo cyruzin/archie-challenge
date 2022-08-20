@@ -49,7 +49,7 @@ describe('invoice repository - getAll success', () => {
       ],
     });
     await InvoiceRepository.getAll();
-    expect(pool.query).toBeCalledTimes(1);
+    expect(pool.query).toBeCalled();
   });
 });
 
@@ -71,7 +71,7 @@ describe('invoice repository - getByID success', () => {
     });
 
     await InvoiceRepository.getByID(1);
-    expect(pool.query).toBeCalledTimes(1);
+    expect(pool.query).toBeCalled();
   });
 });
 

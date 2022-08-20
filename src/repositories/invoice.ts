@@ -16,10 +16,34 @@ async function getAll(): Promise<IInvoice[]> {
         updated_at 
        FROM invoices 
        ORDER BY id DESC 
-       LIMIT 50`,
+       LIMIT 10`,
     );
 
-    return result.rows;
+    const parseInvoices = await Promise.all(
+      result.rows.map(async (el: IInvoice) => {
+        const items = await postgres.query(
+          `
+          SELECT 
+            id,
+            invoice_id,
+            title,
+            description,
+            quantity,
+            rate,
+            amount,
+            created_at,
+            updated_at
+          FROM invoice_items
+          WHERE invoice_id = $1
+          `,
+          [el.id],
+        );
+
+        return { ...el, items: items.rows };
+      }),
+    );
+
+    return parseInvoices;
   } catch (err) {
     throw err;
   }
@@ -44,7 +68,31 @@ async function getByID(id: number): Promise<IInvoice> {
     if (!result.rows[0])
       throw new ResourceNotFoundError('The ID you are looking for could not found');
 
-    return result.rows[0] as IInvoice;
+    const parseInvoices = await Promise.all(
+      result.rows.map(async (el: IInvoice) => {
+        const items = await postgres.query(
+          `
+            SELECT 
+              id,
+              invoice_id,
+              title,
+              description,
+              quantity,
+              rate,
+              amount,
+              created_at,
+              updated_at
+            FROM invoice_items
+            WHERE invoice_id = $1
+            `,
+          [el.id],
+        );
+
+        return { ...el, items: items.rows };
+      }),
+    );
+
+    return parseInvoices[0] as IInvoice;
   } catch (err) {
     throw err;
   }
