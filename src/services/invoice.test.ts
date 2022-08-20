@@ -7,21 +7,47 @@ describe('invoice service - getAll success', () => {
     const mockInvoice: IInvoice[] = [
       {
         id: 1,
-        title: 'First Invoice',
         client_id: 1,
         user_id: 2,
         status: EInvoiceStats.APPROVED,
         total_amount: 5000,
+        items: [
+          {
+            title: 'Invoice 4',
+            description: 'Description of invoice 4',
+            quantity: 2,
+            rate: 200,
+          },
+          {
+            title: 'Invoice 5',
+            description: 'Description of invoice 5',
+            quantity: 3,
+            rate: 400,
+          },
+        ],
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 2,
-        title: 'Another Invoice',
         client_id: 2,
         user_id: 3,
         status: EInvoiceStats.PENDING,
         total_amount: 300,
+        items: [
+          {
+            title: 'Invoice 4',
+            description: 'Description of invoice 4',
+            quantity: 2,
+            rate: 200,
+          },
+          {
+            title: 'Invoice 5',
+            description: 'Description of invoice 5',
+            quantity: 3,
+            rate: 400,
+          },
+        ],
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -56,11 +82,24 @@ describe('invoice service - getByID success', () => {
   test('should return a invoice by id', async () => {
     const mockInvoice: IInvoice = {
       id: 1,
-      title: 'First Invoice',
       client_id: 1,
       user_id: 2,
       status: EInvoiceStats.APPROVED,
       total_amount: 5000,
+      items: [
+        {
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -92,10 +131,22 @@ describe('invoice service - getByID failure', () => {
 describe('invoice service - create success', () => {
   test('should create a new invoice', async () => {
     const mockInvoice: IInvoice = {
-      title: 'First Invoice',
       client_id: 1,
       user_id: 2,
-      total_amount: 5000,
+      items: [
+        {
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
     };
 
     InvoiceRepository.create = jest.fn(() => Promise.resolve());
@@ -109,10 +160,22 @@ describe('invoice service - create success', () => {
 describe('invoice service - create failure', () => {
   test('should fail to create a new invoice', async () => {
     const mockInvoice: IInvoice = {
-      title: 'First Invoice',
       client_id: 1,
       user_id: 2,
-      total_amount: 5000,
+      items: [
+        {
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
     };
 
     InvoiceRepository.create = jest.fn(() => {
@@ -131,11 +194,26 @@ describe('invoice service - update success', () => {
   test('should update a invoice', async () => {
     const mockInvoice: IInvoice = {
       id: 1,
-      title: 'First Invoice',
       client_id: 1,
       user_id: 2,
       status: EInvoiceStats.APPROVED,
       total_amount: 5000,
+      items: [
+        {
+          id: 1,
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          id: 2,
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
     };
 
     InvoiceRepository.getByID = jest.fn(() => Promise.resolve(mockInvoice));
@@ -151,11 +229,26 @@ describe('invoice service - update failure', () => {
   test('should fail to update a invoice', async () => {
     const mockInvoice: IInvoice = {
       id: 1,
-      title: 'First Invoice',
       client_id: 1,
       user_id: 2,
       status: EInvoiceStats.APPROVED,
       total_amount: 5000,
+      items: [
+        {
+          id: 1,
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          id: 2,
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
     };
 
     InvoiceRepository.update = jest.fn(() => {
@@ -174,11 +267,24 @@ describe('invoice service - remove success', () => {
   test('should remove a invoice', async () => {
     const mockInvoice: IInvoice = {
       id: 1,
-      title: 'First Invoice',
       client_id: 1,
       user_id: 2,
       status: EInvoiceStats.APPROVED,
       total_amount: 5000,
+      items: [
+        {
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
       created_at: new Date(),
       updated_at: new Date(),
     };

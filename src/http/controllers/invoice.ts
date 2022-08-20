@@ -31,7 +31,6 @@ export const create = async (req: Request, res: Response) => {
       ...req.body,
       user_id: +req.body.user_id,
       client_id: +req.body.client_id,
-      total_amount: +req.body.total_amount,
     } as IInvoice;
 
     const validation = CreateInvoiceSchema.validate(client);
@@ -53,7 +52,6 @@ export const update = async (req: Request, res: Response) => {
       id: +id,
       user_id: +req.body.user_id,
       client_id: +req.body.client_id,
-      total_amount: +req.body.total_amount,
     } as IInvoice;
 
     const validation = UpdateInvoiceSchema.validate(client);

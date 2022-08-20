@@ -1,6 +1,7 @@
 import { IInvoice, IInvoiceRepository } from '../domain/invoice';
 import ResourceNotFoundError from '../errors/resource-not-found';
 import { postgres } from '../config/database';
+import InvoiceError from '../errors/invoice';
 
 async function getAll(): Promise<IInvoice[]> {
   try {
@@ -9,14 +10,13 @@ async function getAll(): Promise<IInvoice[]> {
         id, 
         user_id, 
         client_id, 
-        title, 
         status, 
         total_amount, 
         created_at, 
         updated_at 
        FROM invoices 
        ORDER BY id DESC 
-       LIMIT 100`,
+       LIMIT 50`,
     );
 
     return result.rows;
@@ -32,7 +32,6 @@ async function getByID(id: number): Promise<IInvoice> {
         id, 
         user_id, 
         client_id, 
-        title, 
         status, 
         total_amount, 
         created_at, 
@@ -53,46 +52,107 @@ async function getByID(id: number): Promise<IInvoice> {
 
 async function create(invoice: IInvoice): Promise<void> {
   try {
-    await postgres.query(
-      `INSERT INTO invoices (
+    await postgres.query('BEGIN');
+
+    const queryInvoice = `INSERT INTO invoices (
         user_id,
         client_id,
-        title,
-        total_amount 
+        total_amount
+     )
+     VALUES($1, $2, $3) RETURNING id`;
+
+    const invoiceValues = [invoice.user_id, invoice.client_id, invoice.total_amount];
+
+    const result = await postgres.query(queryInvoice, invoiceValues);
+
+    await postgres.query('COMMIT');
+
+    const lastInvoiceID = result.rows[0].id;
+
+    const queryInvoiceItems = `INSERT INTO invoice_items (
+          invoice_id,
+          title,
+          description,
+          quantity,
+          rate,
+          amount
        ) 
-       VALUES($1, $2, $3, $4)`,
-      [invoice.user_id, invoice.client_id, invoice.title, invoice.total_amount],
+       VALUES($1, $2, $3, $4, $5, $6)`;
+
+    await Promise.all(
+      invoice.items.map(async (item) => {
+        await postgres.query(queryInvoiceItems, [
+          lastInvoiceID,
+          item.title,
+          item.description,
+          item.quantity,
+          item.rate,
+          item.amount,
+        ]);
+      }),
     );
+
+    await postgres.query('COMMIT');
   } catch (err) {
-    throw err;
+    await postgres.query('ROLLBACK');
+    throw new InvoiceError('Failed to create invoice');
   }
 }
 
 async function update(invoice: IInvoice): Promise<void> {
   try {
+    await postgres.query('BEGIN');
+
+    const queryInvoice = `
+    UPDATE invoices SET 
+     user_id=$1, client_id=$2, status=$3, total_amount=$4, created_at=$5 
+    WHERE id=$6`;
+
     const updated_at = new Date();
 
-    await postgres.query(
-      `UPDATE invoices SET 
-        user_id = $1, 
-        client_id = $2, 
-        title = $3, 
-        status = $4, 
-        total_amount = $5, 
-        updated_at = $6 
-       WHERE id = $7`,
-      [
-        invoice.user_id,
-        invoice.client_id,
-        invoice.title,
-        invoice.status,
-        invoice.total_amount,
-        updated_at,
-        invoice.id,
-      ],
+    const invoiceValues = [
+      invoice.user_id,
+      invoice.client_id,
+      invoice.status,
+      invoice.total_amount,
+      updated_at,
+      invoice.id,
+    ];
+
+    await postgres.query(queryInvoice, invoiceValues);
+
+    await postgres.query('COMMIT');
+
+    const queryInvoiceItems = `UPDATE invoice_items SET
+          invoice_id=$1,
+          title=$2,
+          description=$3,
+          quantity=$4,
+          rate=$5,
+          amount=$6,
+          updated_at=$7
+        WHERE id=$8
+          `;
+
+    await Promise.all(
+      invoice.items.map(async (item) => {
+        await postgres.query(queryInvoiceItems, [
+          invoice.id,
+          item.title,
+          item.description,
+          item.quantity,
+          item.rate,
+          item.amount,
+          updated_at,
+          item.id,
+        ]);
+      }),
     );
+
+    await postgres.query('COMMIT');
   } catch (err) {
-    throw err;
+    await postgres.query('ROLLBACK');
+    throw new InvoiceError('Failed to update invoice');
   }
 }
 

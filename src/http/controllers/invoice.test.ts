@@ -7,21 +7,49 @@ describe('invoice controller - getAll success', () => {
     const mockInvoices: IInvoice[] = [
       {
         id: 1,
-        title: 'First Invoice',
         client_id: 1,
         user_id: 2,
         status: EInvoiceStats.APPROVED,
         total_amount: 5000,
+        items: [
+          {
+            title: 'Invoice 4',
+            description: 'Description of invoice 4',
+            quantity: 2,
+            rate: 200,
+          },
+          {
+            title: 'Invoice 5',
+            description: 'Description of invoice 5',
+            quantity: 3,
+            rate: 400,
+          },
+        ],
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 2,
-        title: 'Another Invoice',
         client_id: 2,
         user_id: 3,
         status: EInvoiceStats.PENDING,
         total_amount: 300,
+        items: [
+          {
+            id: 1,
+            title: 'Invoice 6',
+            description: 'Description of invoice 6',
+            quantity: 2,
+            rate: 200,
+          },
+          {
+            id: 2,
+            title: 'Invoice 7',
+            description: 'Description of invoice 7',
+            quantity: 3,
+            rate: 400,
+          },
+        ],
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -42,11 +70,24 @@ describe('invoice controller - getByID success', () => {
   test('should return a invoice by id', async () => {
     const mockInvoice: IInvoice = {
       id: 1,
-      title: 'First Invoice',
       client_id: 1,
       user_id: 2,
       status: EInvoiceStats.APPROVED,
       total_amount: 5000,
+      items: [
+        {
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -68,10 +109,22 @@ describe('invoice controller - create success', () => {
 
     const req: any = {
       body: {
-        title: 'First Invoice',
         client_id: 1,
         user_id: 2,
-        total_amount: 5000,
+        items: [
+          {
+            title: 'Invoice 4',
+            description: 'Description of invoice 4',
+            quantity: 2,
+            rate: 200,
+          },
+          {
+            title: 'Invoice 5',
+            description: 'Description of invoice 5',
+            quantity: 3,
+            rate: 400,
+          },
+        ],
       },
     };
     const res: any = { status: jest.fn().mockReturnThis(), send: jest.fn(), json: jest.fn() };
@@ -89,11 +142,25 @@ describe('invoice controller - update success', () => {
     const req: any = {
       params: { id: 1 },
       body: {
-        title: 'First Invoice',
         client_id: 1,
-        user_id: 2,
+        user_id: 1,
         status: EInvoiceStats.APPROVED,
-        total_amount: 5000,
+        items: [
+          {
+            id: 1,
+            title: 'Invoice 4',
+            description: 'Description of invoice 4',
+            quantity: 2,
+            rate: 200,
+          },
+          {
+            id: 2,
+            title: 'Invoice 5',
+            description: 'Description of invoice 5',
+            quantity: 3,
+            rate: 400,
+          },
+        ],
       },
     };
     const res: any = { status: jest.fn().mockReturnThis(), send: jest.fn(), json: jest.fn() };

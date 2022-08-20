@@ -1,4 +1,4 @@
-import { IInvoice, IInvoiceService } from '../domain/invoice';
+import { IInvoice, IInvoiceItem, IInvoiceService } from '../domain/invoice';
 import { InvoiceRepository } from '../repositories/invoice';
 
 async function getAll(): Promise<IInvoice[]> {
@@ -19,7 +19,18 @@ async function getByID(id: number): Promise<IInvoice> {
 
 async function create(invoice: IInvoice): Promise<void> {
   try {
-    await InvoiceRepository.create(invoice);
+    const calcs: IInvoiceItem[] = invoice.items.map((current: IInvoiceItem) => ({
+      ...current,
+      amount: current.rate * current.quantity,
+    }));
+
+    const createInvoice: IInvoice = {
+      ...invoice,
+      items: calcs,
+      total_amount: calcs.reduce((previous, current) => previous + Number(current.amount), 0),
+    };
+
+    await InvoiceRepository.create(createInvoice);
   } catch (err) {
     throw err;
   }
@@ -27,8 +38,20 @@ async function create(invoice: IInvoice): Promise<void> {
 
 async function update(invoice: IInvoice): Promise<void> {
   try {
-    await InvoiceRepository.getByID(Number(invoice?.id));
-    await InvoiceRepository.update(invoice);
+    await InvoiceRepository.getByID(Number(invoice.id));
+
+    const calcs: IInvoiceItem[] = invoice.items.map((current: IInvoiceItem) => ({
+      ...current,
+      amount: current.rate * current.quantity,
+    }));
+
+    const updateInvoice: IInvoice = {
+      ...invoice,
+      items: calcs,
+      total_amount: calcs.reduce((previous, current) => previous + Number(current.amount), 0),
+    };
+
+    await InvoiceRepository.update(updateInvoice);
   } catch (err) {
     throw err;
   }

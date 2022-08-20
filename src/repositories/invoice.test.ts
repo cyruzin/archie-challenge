@@ -77,17 +77,29 @@ describe('invoice repository - getByID success', () => {
 
 describe('invoice repository - create success', () => {
   test('should create a new invoice', async () => {
-    pool.query.mockResolvedValue({ rows: [] });
+    pool.query.mockResolvedValue({ rows: [{ result: [{ id: 1 }] }] });
 
     const mockInvoice: IInvoice = {
-      title: 'First Invoice',
       client_id: 1,
-      user_id: 2,
-      total_amount: 5000,
+      user_id: 1,
+      items: [
+        {
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
     };
 
     await InvoiceRepository.create(mockInvoice);
-    expect(pool.query).toBeCalledTimes(1);
+    expect(pool.query).toBeCalled();
   });
 });
 
@@ -97,15 +109,29 @@ describe('invoice repository - update success', () => {
 
     const mockInvoice: IInvoice = {
       id: 1,
-      title: 'First Invoice',
       client_id: 1,
-      user_id: 2,
+      user_id: 1,
       status: EInvoiceStats.APPROVED,
-      total_amount: 5000,
+      items: [
+        {
+          id: 1,
+          title: 'Invoice 4',
+          description: 'Description of invoice 4',
+          quantity: 2,
+          rate: 200,
+        },
+        {
+          id: 2,
+          title: 'Invoice 5',
+          description: 'Description of invoice 5',
+          quantity: 3,
+          rate: 400,
+        },
+      ],
     };
 
     await InvoiceRepository.update(mockInvoice);
-    expect(pool.query).toBeCalledTimes(1);
+    expect(pool.query).toBeCalled();
   });
 });
 

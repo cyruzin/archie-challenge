@@ -4,13 +4,25 @@ export enum EInvoiceStats {
   CANCELED = 'CANCELED',
 }
 
+export interface IInvoiceItem {
+  id?: number;
+  invoice_id?: number;
+  title: string;
+  description: string;
+  quantity: number;
+  rate: number;
+  amount?: number;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
 export interface IInvoice {
   id?: number;
   user_id: number;
   client_id: number;
-  title: string;
+  items: IInvoiceItem[];
   status?: EInvoiceStats;
-  total_amount: number;
+  total_amount?: number;
   created_at?: Date;
   updated_at?: Date;
 }
