@@ -1,4 +1,4 @@
-import { IInvoice, IInvoiceRepository } from '../domain/invoice';
+import { IInvoice, IInvoiceItem, IInvoiceRepository } from '../domain/invoice';
 import ResourceNotFoundError from '../errors/resource-not-found';
 import { postgres } from '../config/database';
 import InvoiceError from '../errors/invoice';
@@ -19,32 +19,39 @@ async function getAll(): Promise<IInvoice[]> {
        LIMIT 10`,
     );
 
-    const parseInvoices = await Promise.all(
-      result.rows.map(async (el: IInvoice) => {
-        const items = await postgres.query(
-          `
-          SELECT 
-            id,
-            invoice_id,
-            title,
-            description,
-            quantity,
-            rate,
-            amount,
-            created_at,
-            updated_at
-          FROM invoice_items
-          WHERE invoice_id = $1
-          `,
-          [el.id],
-        );
+    const parentInvoicesIDs = result.rows.map((el: IInvoice) => Number(el.id)).flat();
 
-        return { ...el, items: items.rows };
-      }),
+    const invoiceItems = await postgres.query(
+      `SELECT 
+        id,
+        invoice_id,
+        title,
+        description,
+        quantity,
+        rate,
+        amount,
+        created_at,
+        updated_at
+       FROM invoice_items
+       WHERE invoice_id = ANY($1::int[])
+          `,
+      [parentInvoicesIDs],
     );
+
+    const parseInvoices = result.rows.map((el: IInvoice) => {
+      const currentItem: IInvoiceItem[] = invoiceItems.rows.filter(
+        (item: IInvoiceItem) => item.invoice_id === el.id,
+      );
+
+      return {
+        ...el,
+        items: currentItem,
+      } as IInvoice;
+    });
 
     return parseInvoices;
   } catch (err) {
+    console.log(err);
     throw err;
   }
 }
@@ -68,29 +75,33 @@ async function getByID(id: number): Promise<IInvoice> {
     if (!result.rows[0])
       throw new ResourceNotFoundError('The ID you are looking for could not found');
 
-    const parseInvoices = await Promise.all(
-      result.rows.map(async (el: IInvoice) => {
-        const items = await postgres.query(
-          `
-            SELECT 
-              id,
-              invoice_id,
-              title,
-              description,
-              quantity,
-              rate,
-              amount,
-              created_at,
-              updated_at
-            FROM invoice_items
-            WHERE invoice_id = $1
+    const invoiceItems = await postgres.query(
+      `SELECT 
+          id,
+          invoice_id,
+          title,
+          description,
+          quantity,
+          rate,
+          amount,
+          created_at,
+          updated_at
+         FROM invoice_items
+         WHERE invoice_id = $1
             `,
-          [el.id],
-        );
-
-        return { ...el, items: items.rows };
-      }),
+      [id],
     );
+
+    const parseInvoices = result.rows.map((el: IInvoice) => {
+      const currentItem: IInvoiceItem[] = invoiceItems.rows.filter(
+        (item: IInvoiceItem) => item.invoice_id === el.id,
+      );
+
+      return {
+        ...el,
+        items: currentItem,
+      } as IInvoice;
+    });
 
     return parseInvoices[0] as IInvoice;
   } catch (err) {
