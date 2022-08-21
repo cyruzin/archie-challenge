@@ -1,7 +1,7 @@
 import { EHTTP } from '../enums/http-status-code';
 import CustomError from './custom';
 
-export default class ResourceNotFoundError extends CustomError {
+export default class ServerError extends CustomError {
   status: number;
 
   constructor(message: string) {
@@ -9,6 +9,6 @@ export default class ResourceNotFoundError extends CustomError {
     Error.captureStackTrace(this, this.constructor);
 
     this.name = this.constructor.name;
-    this.status = EHTTP.StatusNotFound;
+    this.status = EHTTP.StatusInternalServerError;
   }
 }

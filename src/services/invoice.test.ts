@@ -72,7 +72,7 @@ describe('invoice service - getAll failure', () => {
 
     try {
       await InvoiceService.getAll();
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to retrieve the invoices');
     }
   });
@@ -122,7 +122,7 @@ describe('invoice service - getByID failure', () => {
 
     try {
       await InvoiceService.getByID(1);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to retrieve the invoice');
     }
   });
@@ -184,7 +184,7 @@ describe('invoice service - create failure', () => {
 
     try {
       await InvoiceService.create(mockInvoice);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to create the invoice');
     }
   });
@@ -257,7 +257,7 @@ describe('invoice service - update failure', () => {
 
     try {
       await InvoiceService.update(mockInvoice);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to update the invoice');
     }
   });
@@ -306,7 +306,7 @@ describe('invoice service - remove failure', () => {
 
     try {
       await InvoiceService.remove(1);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to remove the invoice');
     }
   });

@@ -38,7 +38,7 @@ describe('user service - getAll failure', () => {
 
     try {
       await UserService.getAll();
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to retrieve the users');
     }
   });
@@ -71,7 +71,7 @@ describe('user service - getByID failure', () => {
 
     try {
       await UserService.getByID(1);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to retrieve the user');
     }
   });
@@ -103,7 +103,7 @@ describe('user service - create failure', () => {
 
     try {
       await UserService.create(mockUser);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to create the user');
     }
   });
@@ -138,7 +138,7 @@ describe('user service - update failure', () => {
 
     try {
       await UserService.update(mockUser);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to update the user');
     }
   });
@@ -170,7 +170,7 @@ describe('user service - remove failure', () => {
 
     try {
       await UserService.remove(1);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to remove the user');
     }
   });

@@ -1,14 +1,15 @@
 import { EHTTP } from '../enums/http-status-code';
-import CustomError from './custom';
 
-export default class ResourceNotFoundError extends CustomError {
+export default class CustomError extends Error {
   status: number;
+  message: string;
 
   constructor(message: string) {
-    super(message);
+    super();
     Error.captureStackTrace(this, this.constructor);
 
     this.name = this.constructor.name;
-    this.status = EHTTP.StatusNotFound;
+    this.message = message;
+    this.status = EHTTP.StatusInternalServerError;
   }
 }

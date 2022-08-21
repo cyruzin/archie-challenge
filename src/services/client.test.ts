@@ -38,7 +38,7 @@ describe('client service - getAll failure', () => {
 
     try {
       await ClientService.getAll();
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to retrieve the clients');
     }
   });
@@ -71,7 +71,7 @@ describe('client service - getByID failure', () => {
 
     try {
       await ClientService.getByID(1);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to retrieve the client');
     }
   });
@@ -103,7 +103,7 @@ describe('client service - create failure', () => {
 
     try {
       await ClientService.create(mockClient);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to create the client');
     }
   });
@@ -138,7 +138,7 @@ describe('client service - update failure', () => {
 
     try {
       await ClientService.update(mockClient);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to update the client');
     }
   });
@@ -170,7 +170,7 @@ describe('client service - remove failure', () => {
 
     try {
       await ClientService.remove(1);
-    } catch (err: any) {
+    } catch (err) {
       expect(err.message).toEqual('failed to remove the client');
     }
   });
