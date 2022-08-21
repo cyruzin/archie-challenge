@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { EInvoiceStats, IInvoice } from '../domain/invoice';
+import { EInvoiceStatus, IInvoice } from '../domain/invoice';
 import { InvoiceRepository } from './invoice';
 
 jest.mock('pg', () => {
@@ -31,7 +31,7 @@ describe('invoice repository - getAll success', () => {
           title: 'First Invoice',
           client_id: 1,
           user_id: 2,
-          status: EInvoiceStats.APPROVED,
+          status: EInvoiceStatus.APPROVED,
           total_amount: 5000,
           created_at: new Date(),
           updated_at: new Date(),
@@ -41,7 +41,7 @@ describe('invoice repository - getAll success', () => {
           title: 'Another Invoice',
           client_id: 2,
           user_id: 3,
-          status: EInvoiceStats.PENDING,
+          status: EInvoiceStatus.PENDING,
           total_amount: 300,
           created_at: new Date(),
           updated_at: new Date(),
@@ -62,7 +62,7 @@ describe('invoice repository - getByID success', () => {
           title: 'First Invoice',
           client_id: 1,
           user_id: 2,
-          status: EInvoiceStats.APPROVED,
+          status: EInvoiceStatus.APPROVED,
           total_amount: 5000,
           created_at: new Date(),
           updated_at: new Date(),
@@ -111,7 +111,7 @@ describe('invoice repository - update success', () => {
       id: 1,
       client_id: 1,
       user_id: 1,
-      status: EInvoiceStats.APPROVED,
+      status: EInvoiceStatus.APPROVED,
       items: [
         {
           id: 1,

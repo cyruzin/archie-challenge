@@ -1,4 +1,4 @@
-import { EInvoiceStats, IInvoice } from '../../domain/invoice';
+import { EInvoiceStatus, IInvoice } from '../../domain/invoice';
 import { InvoiceService } from '../../services/invoice';
 import InvoiceController from './invoice';
 
@@ -9,7 +9,7 @@ describe('invoice controller - getAll success', () => {
         id: 1,
         client_id: 1,
         user_id: 2,
-        status: EInvoiceStats.APPROVED,
+        status: EInvoiceStatus.APPROVED,
         total_amount: 5000,
         items: [
           {
@@ -32,7 +32,7 @@ describe('invoice controller - getAll success', () => {
         id: 2,
         client_id: 2,
         user_id: 3,
-        status: EInvoiceStats.PENDING,
+        status: EInvoiceStatus.PENDING,
         total_amount: 300,
         items: [
           {
@@ -72,7 +72,7 @@ describe('invoice controller - getByID success', () => {
       id: 1,
       client_id: 1,
       user_id: 2,
-      status: EInvoiceStats.APPROVED,
+      status: EInvoiceStatus.APPROVED,
       total_amount: 5000,
       items: [
         {
@@ -144,7 +144,7 @@ describe('invoice controller - update success', () => {
       body: {
         client_id: 1,
         user_id: 1,
-        status: EInvoiceStats.APPROVED,
+        status: EInvoiceStatus.APPROVED,
         items: [
           {
             id: 1,

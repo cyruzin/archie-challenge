@@ -1,4 +1,4 @@
-import { EInvoiceStats, IInvoice } from '../domain/invoice';
+import { EInvoiceStatus, IInvoice } from '../domain/invoice';
 import { InvoiceService } from './invoice';
 import { InvoiceRepository } from '../repositories/invoice';
 
@@ -9,7 +9,7 @@ describe('invoice service - getAll success', () => {
         id: 1,
         client_id: 1,
         user_id: 2,
-        status: EInvoiceStats.APPROVED,
+        status: EInvoiceStatus.APPROVED,
         total_amount: 5000,
         items: [
           {
@@ -32,7 +32,7 @@ describe('invoice service - getAll success', () => {
         id: 2,
         client_id: 2,
         user_id: 3,
-        status: EInvoiceStats.PENDING,
+        status: EInvoiceStatus.PENDING,
         total_amount: 300,
         items: [
           {
@@ -57,8 +57,8 @@ describe('invoice service - getAll success', () => {
 
     const res = await InvoiceService.getAll();
 
-    expect(res[0].status).toBe(EInvoiceStats.APPROVED);
-    expect(res[1].status).toBe(EInvoiceStats.PENDING);
+    expect(res[0].status).toBe(EInvoiceStatus.APPROVED);
+    expect(res[1].status).toBe(EInvoiceStatus.PENDING);
 
     expect(InvoiceRepository.getAll).toBeCalledTimes(1);
   });
@@ -84,7 +84,7 @@ describe('invoice service - getByID success', () => {
       id: 1,
       client_id: 1,
       user_id: 2,
-      status: EInvoiceStats.APPROVED,
+      status: EInvoiceStatus.APPROVED,
       total_amount: 5000,
       items: [
         {
@@ -108,7 +108,7 @@ describe('invoice service - getByID success', () => {
 
     const res = await InvoiceService.getByID(1);
 
-    expect(res.status).toBe(EInvoiceStats.APPROVED);
+    expect(res.status).toBe(EInvoiceStatus.APPROVED);
 
     expect(InvoiceRepository.getByID).toBeCalledTimes(1);
   });
@@ -196,7 +196,7 @@ describe('invoice service - update success', () => {
       id: 1,
       client_id: 1,
       user_id: 2,
-      status: EInvoiceStats.APPROVED,
+      status: EInvoiceStatus.APPROVED,
       total_amount: 5000,
       items: [
         {
@@ -231,7 +231,7 @@ describe('invoice service - update failure', () => {
       id: 1,
       client_id: 1,
       user_id: 2,
-      status: EInvoiceStats.APPROVED,
+      status: EInvoiceStatus.APPROVED,
       total_amount: 5000,
       items: [
         {
@@ -269,7 +269,7 @@ describe('invoice service - remove success', () => {
       id: 1,
       client_id: 1,
       user_id: 2,
-      status: EInvoiceStats.APPROVED,
+      status: EInvoiceStatus.APPROVED,
       total_amount: 5000,
       items: [
         {

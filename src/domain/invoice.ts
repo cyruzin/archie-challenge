@@ -1,4 +1,4 @@
-export enum EInvoiceStats {
+export enum EInvoiceStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   CANCELED = 'CANCELED',
@@ -21,7 +21,7 @@ export interface IInvoice {
   user_id: number;
   client_id: number;
   items: IInvoiceItem[];
-  status?: EInvoiceStats;
+  status?: EInvoiceStatus;
   total_amount?: number;
   created_at?: Date;
   updated_at?: Date;

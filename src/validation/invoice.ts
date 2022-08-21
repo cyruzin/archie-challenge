@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IInvoice, EInvoiceStats } from '../domain/invoice';
+import { IInvoice, EInvoiceStatus } from '../domain/invoice';
 
 export const CreateInvoiceSchema = Joi.object<IInvoice>({
   user_id: Joi.number().positive().required(),
@@ -28,6 +28,6 @@ export const UpdateInvoiceSchema = Joi.object<IInvoice>({
     })
     .min(1),
   status: Joi.string()
-    .valid(EInvoiceStats.PENDING, EInvoiceStats.APPROVED, EInvoiceStats.CANCELED)
+    .valid(EInvoiceStatus.PENDING, EInvoiceStatus.APPROVED, EInvoiceStatus.CANCELED)
     .required(),
 });
