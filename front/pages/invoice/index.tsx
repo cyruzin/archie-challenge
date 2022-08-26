@@ -33,6 +33,7 @@ export interface IInvoice {
 export default function Invoices() {
   const [invoice, setInvoice] = React.useState<IInvoice[]>([]);
   const [newInvoice, setNewInvoice] = React.useState<IInvoice>();
+  const [showForm, setShowForm] = React.useState(false);
 
   const getInvoices = React.useCallback(async () => {
     try {
@@ -79,65 +80,83 @@ export default function Invoices() {
   return (
     <div>
       <h1>Invoices</h1>
-      {invoice?.map((el) => (
-        <React.Fragment key={el.id}>
-          <p>
-            {el.id} -{" "}
-            {el.total_amount.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-            })}{" "}
-            - {el.status} - {el.created_at} - {el.created_at}{" "}
+      <button onClick={() => setShowForm(!showForm)}>Create</button>
+      {invoice?.map((el) => {
+        return (
+          <React.Fragment key={el.id}>
+            <div>
+              <p>ID: {el.id}</p>
+              <p>
+                Amount:{" "}
+                {el.total_amount.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </p>
+              <p>Status: {el.status}</p>
+              <p>Items: {el.items.length}</p>
+            </div>
+            <ul>
+              {el.items.map((item) => {
+                return (
+                  <React.Fragment key={item.id}>
+                    <li>ID: {item.id}</li>
+                    <li>Title: {item.title}</li>
+                    <li>Rate: {item.rate}</li>
+                    <li style={{ marginBottom: 10 }}>
+                      Amount: $ {item.amount}
+                    </li>
+                  </React.Fragment>
+                );
+              })}
+            </ul>
             <button>Edit</button> <button>Remove</button>
-          </p>
-          <p>Items</p>
-          <ul>
-            <li>{el.items.map((item) => item.id)}</li>
-            <li>{el.items.map((item) => item.title)}</li>
-            <li>{el.items.map((item) => item.rate)}</li>
-            <li>{el.items.map((item) => item.amount)}</li>
-          </ul>
-        </React.Fragment>
-      ))}
+          </React.Fragment>
+        );
+      })}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "400px",
-          marginTop: "10px",
-        }}
-      >
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          onChange={getFormData}
-        />{" "}
-        <br />
-        <input
-          type="text"
-          name="description"
-          placeholder="Description"
-          onChange={getFormData}
-        />{" "}
-        <br />
-        <input
-          type="text"
-          name="quantity"
-          placeholder="Quantity"
-          onChange={getFormData}
-        />{" "}
-        <br />
-        <input
-          type="text"
-          name="rate"
-          placeholder="Rate"
-          onChange={getFormData}
-        />{" "}
-        <br />
-        <button onClick={sendInvoice}>Save</button>
-      </div>
+      {showForm && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "400px",
+            marginTop: "40px",
+          }}
+        >
+          <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            onChange={getFormData}
+          />{" "}
+          <br />
+          <input
+            type="text"
+            name="description"
+            placeholder="Description"
+            onChange={getFormData}
+          />{" "}
+          <br />
+          <input
+            type="text"
+            name="quantity"
+            placeholder="Quantity"
+            onChange={getFormData}
+          />{" "}
+          <br />
+          <input
+            type="text"
+            name="rate"
+            placeholder="Rate"
+            onChange={getFormData}
+          />{" "}
+          <br />
+          <button onClick={() => setShowForm(false)}>Cancel</button>
+          <br />
+          <button onClick={sendInvoice}>Save</button>
+        </div>
+      )}
     </div>
   );
 }
