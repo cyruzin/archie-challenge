@@ -1,7 +1,8 @@
 import Head from "next/head";
-import Layout from "../components/Layout";
+import React from "react";
+import Layout from "../../components/Layout";
 
-export default function Home() {
+export default function Users() {
   return (
     <div>
       <Head>
@@ -9,7 +10,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <h1>Archie Front-End Challenge</h1>
+        <h1>Users</h1>
       </Layout>
     </div>
   );
